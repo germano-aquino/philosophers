@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   setup.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: grenato- <grenato-@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: germano <germano@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 14:14:22 by grenato-          #+#    #+#             */
-/*   Updated: 2022/10/08 15:19:49 by grenato-         ###   ########.fr       */
+/*   Updated: 2022/10/10 16:09:17 by germano          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ t_philo	*create_philo(t_fork *left, t_fork *right, t_state state)
 	t_philo	*new_philo;
 
 	new_philo = (t_philo *)malloc(sizeof(t_philo));
+	new_philo->th = (pthread_t *)malloc(sizeof(pthread_t));
 	new_philo->left = left;
 	new_philo->right = right;
 	new_philo->state = state;
@@ -51,10 +52,12 @@ t_fork  *create_forks(unsigned long int forks_amount)
 		printf(ERR_MSG_ALLOC);
 		exit(1);
 	}
-	i = 0;
+	i = -1;
 	while (++i < forks_amount + 1)
 	{
-		forks[i - 1].id = i;
+		forks[i].id = 1 + i;
+		forks[i].mutex = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
+		pthread_mutex_init(forks[i].mutex, NULL);
 	}
 	return (forks);
 }

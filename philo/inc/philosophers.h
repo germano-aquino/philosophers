@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: grenato- <grenato-@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: germano <germano@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/07 19:42:09 by grenato-          #+#    #+#             */
-/*   Updated: 2022/10/08 15:20:35 by grenato-         ###   ########.fr       */
+/*   Updated: 2022/10/10 16:39:12 by germano          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,12 @@ typedef enum e_bool
 typedef enum e_state
 {
 	NONE,
+	WAITING,
 	EAT,
 	SLEEP,
 	THINK,
-	DEAD
+	DEAD,
+	END_OF_PROGRAM
 }	t_state;
 
 typedef struct s_clist
@@ -52,15 +54,17 @@ typedef struct s_clist
 
 typedef struct s_fork
 {
-	int id;
+	int 			id;
+	pthread_mutex_t	*mutex;
 }	t_fork;
 
 
 typedef struct s_philo
 {
-	t_state state;
-	t_fork  *left;
-	t_fork  *right;
+	pthread_t	*th;
+	t_state		state;
+	t_fork  	*left;
+	t_fork  	*right;
 }	t_philo;
 
 typedef struct s_rules
