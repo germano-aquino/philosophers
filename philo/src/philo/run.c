@@ -6,7 +6,7 @@
 /*   By: germano <germano@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 14:15:27 by grenato-          #+#    #+#             */
-/*   Updated: 2022/10/11 10:59:04 by germano          ###   ########.fr       */
+/*   Updated: 2022/10/11 20:06:05 by germano          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@ void	*life_cicle(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
-	// if (philo->state == NONE)
-	// 	initial_state();
+	if (philo->state == INIT)
+	 	initial_state(philo);
 	// else if (philo->state == WAITING)
 	// 	waiting_to_eat();
 	// else if (philo->state == EAT)
@@ -31,8 +31,8 @@ void	*life_cicle(void *arg)
 	// 	exit_due_death();
 	// else if (philo->state == END_OF_PROGRAM)
 	// 	exit_due_victory();
-	usleep(100 * philo->right->id);
-	printf("Hello from %d philosopher.\n", philo->right->id);
+	//usleep(100 * philo->right->id);
+	//printf("Hello from %d philosopher.\n", philo->right->id);
 	return NULL;
 }
 

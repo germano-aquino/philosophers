@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: grenato- <grenato-@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: germano <germano@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 11:23:03 by grenato-          #+#    #+#             */
-/*   Updated: 2022/10/10 22:20:53 by grenato-         ###   ########.fr       */
+/*   Updated: 2022/10/11 19:23:35 by germano          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,5 @@ void    receive_input(int argc, char *argv[], t_rules *rules)
     numb = alloc_numbers(numb_amount);
     populate_numbers(numb, numb_amount, argv);
     populate_rules(rules, numb, numb_amount);
-    display_rules(rules);
     ft_memfree((void **)&numb);
 }

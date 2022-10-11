@@ -6,7 +6,7 @@
 /*   By: germano <germano@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/07 19:42:09 by grenato-          #+#    #+#             */
-/*   Updated: 2022/10/11 11:16:27 by germano          ###   ########.fr       */
+/*   Updated: 2022/10/11 19:38:29 by germano          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <pthread.h>
+# include <sys/time.h>
 
 # define ERR_MSG_INV_INPUT_AMOUNT "The program requires 4 or 5 parameters.\n"
 # define USAGE_MSG "\
@@ -26,6 +27,10 @@ You should run the program as follows.\n\
 "
 # define ERR_MSG_INPUT_NOT_NUMB "This %s parameter has a non digit character.\n"
 # define ERR_MSG_ALLOC "Allocation Error!\n"
+# define NUMBER_OF_STATES 7
+
+
+typedef struct timeval t_timeval;
 
 
 typedef enum e_bool
@@ -36,7 +41,7 @@ typedef enum e_bool
 
 typedef enum e_state
 {
-	NONE,
+	INIT,
 	WAITING,
 	EAT,
 	SLEEP,
@@ -52,6 +57,15 @@ typedef struct s_clist
 	struct s_clist *prev;
 }   t_clist;
 
+typedef struct s_rules
+{
+	unsigned long int	philo_amount;
+	unsigned long int	die_time;
+	unsigned long int	eat_time;
+	unsigned long int	sleep_time;
+	unsigned long int	must_eat;
+	t_bool				has_must_eat;
+}	t_rules;
 
 typedef struct s_fork
 {
@@ -64,21 +78,13 @@ typedef struct s_fork
 typedef struct s_philo
 {
 	int			id;
+	long int	last_meal_time;
 	pthread_t	th;
 	t_state		state;
 	t_fork  	*left;
 	t_fork  	*right;
+	t_rules		*rules;
 }	t_philo;
-
-typedef struct s_rules
-{
-	unsigned long int	philo_amount;
-	unsigned long int	die_time;
-	unsigned long int	eat_time;
-	unsigned long int	sleep_time;
-	unsigned long int	must_eat;
-	t_bool				has_must_eat;
-}	t_rules;
 
 
 
@@ -92,7 +98,21 @@ t_clist *create_clist_item(t_clist *next, t_clist *prev, void *content);
 void    validate_input(int argc, char *argv[]);
 void    receive_input(int argc, char *argv[], t_rules *rule);
 
+void	waiting_to_eat(t_philo *philo);
+void	go_sleep(t_philo *philo);
+void	go_think(t_philo *philo);
+void	try_to_eat(t_philo *philo);
+
+void	initial_state(t_philo *philo);
+
 void    display_rules(t_rules *rules);
+
+void	print_log(t_philo *philo);
+
+int 	ft_strlen(char *str);
+char    *ft_strjoin_and_free(char *s1, char *s2);
+char	*unsignedlongint_to_string(unsigned long int number);
+char	*int_to_string(int id);
 
 void    ft_memfree(void **ptr);
 void    program_free(t_fork **forks, t_clist **philos, t_rules *rules);
