@@ -6,7 +6,7 @@
 /*   By: grenato- <grenato-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 14:32:26 by grenato-          #+#    #+#             */
-/*   Updated: 2022/10/08 15:21:05 by grenato-         ###   ########.fr       */
+/*   Updated: 2022/10/10 21:15:25 by grenato-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,5 +40,22 @@ void    clst_addback(t_clist **head, t_clist *new_elt)
         (*head)->prev = new_elt;
         new_elt->next = *head;
         new_elt->prev = last;
+    }
+}
+
+void    clst_clear(t_clist **head, void (*f)(void *))
+{
+    t_clist *iter;
+    t_clist *tmp;
+
+    (*head)->prev->next = NULL;
+    (*head)->prev = NULL;
+    iter = *head;
+    while(iter != NULL)
+    {
+        f(iter->content);
+        tmp = iter;
+        iter = iter->next;
+        ft_memfree((void **)&tmp);
     }
 }

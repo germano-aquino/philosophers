@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   setup.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: germano <germano@student.42.fr>            +#+  +:+       +#+        */
+/*   By: grenato- <grenato-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 14:14:22 by grenato-          #+#    #+#             */
-/*   Updated: 2022/10/10 16:09:17 by germano          ###   ########.fr       */
+/*   Updated: 2022/10/10 21:31:52 by grenato-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ t_fork  *create_forks(unsigned long int forks_amount)
 		exit(1);
 	}
 	i = -1;
-	while (++i < forks_amount + 1)
+	while (++i < forks_amount)
 	{
 		forks[i].id = 1 + i;
 		forks[i].mutex = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));

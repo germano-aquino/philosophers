@@ -6,7 +6,7 @@
 #    By: grenato- <grenato-@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/24 19:19:45 by grenato-          #+#    #+#              #
-#    Updated: 2022/10/08 14:32:23 by grenato-         ###   ########.fr        #
+#    Updated: 2022/10/10 22:00:23 by grenato-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,12 +20,13 @@ SOURCE_DIRS			+= input utils setup philo clist
 SOURCE_PATH			:= $(addprefix src/, $(SOURCE_DIRS))
 SOURCE_FILES		:= main.c
 SOURCE_FILES		+= validate.c input.c free.c setup.c run.c operations.c
+SOURCE_FILES		+= display.c
 
 OBJECT_PATH			:= obj
 OBJECT				:= $(SOURCE_FILES:%.c=$(OBJECT_PATH)/%.o)
 
-CC					:= cc
-CFLAGS				:= -Wall -Wextra -Werror
+CC					:= gcc
+CFLAGS				:= -Wall -Wextra -Werror -g3
 REMOVE				:= rm -rf
 VALGRIND			:= valgrind
 LDFLAGS				:= -L -lpthread

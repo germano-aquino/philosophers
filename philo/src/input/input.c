@@ -6,7 +6,7 @@
 /*   By: grenato- <grenato-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 11:23:03 by grenato-          #+#    #+#             */
-/*   Updated: 2022/10/08 12:24:36 by grenato-         ###   ########.fr       */
+/*   Updated: 2022/10/10 22:20:53 by grenato-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ unsigned long int char_to_ulongint(char *str)
     {
         number *= 10;
         number += (unsigned long int)(*tmp - '0');
+        tmp++;
     }
     return (number);
 }
@@ -50,12 +51,13 @@ static void populate_numbers(unsigned long int *numb, int numbers_amount, char *
     int i;
 
     i = 0;
-    while (++i < numbers_amount)
+    while (++i < numbers_amount + 1)
         numb[i - 1] = char_to_ulongint(argv[i]);
 }
 
 static void populate_rules(t_rules *rules, unsigned long int *numb, int numbers_amount)
 {
+    rules->must_eat = -1;
     rules->philo_amount = numb[0];
     rules->die_time = numb[1];
     rules->eat_time = numb[2];
@@ -77,5 +79,6 @@ void    receive_input(int argc, char *argv[], t_rules *rules)
     numb = alloc_numbers(numb_amount);
     populate_numbers(numb, numb_amount, argv);
     populate_rules(rules, numb, numb_amount);
+    display_rules(rules);
     ft_memfree((void **)&numb);
 }
