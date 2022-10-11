@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   run.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: grenato- <grenato-@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: germano <germano@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 14:15:27 by grenato-          #+#    #+#             */
-/*   Updated: 2022/10/10 21:48:44 by grenato-         ###   ########.fr       */
+/*   Updated: 2022/10/11 10:59:04 by germano          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	starting_threads(t_clist *philos, t_rules *rules)
 	while(++i < (int)rules->philo_amount)
 	{
 		philo = (t_philo *)current_philo->content;
-		pthread_create(philo->th, NULL, life_cicle, current_philo->content);
+		pthread_create(&philo->th, NULL, life_cicle, current_philo->content);
 		current_philo = current_philo->next;
 	}
 }
@@ -63,7 +63,7 @@ void	ending_threads(t_clist *philos, t_rules *rules)
 	while (++i < (int)rules->philo_amount)
 	{
 		philo = (t_philo *) current_philo->content;
-		pthread_join(*(philo->th), NULL);
+		pthread_join(philo->th, NULL);
 		current_philo = current_philo->next;
 	}
 }

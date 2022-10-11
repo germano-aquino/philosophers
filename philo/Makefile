@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: grenato- <grenato-@student.42sp.org.br>    +#+  +:+       +#+         #
+#    By: germano <germano@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/24 19:19:45 by grenato-          #+#    #+#              #
-#    Updated: 2022/10/10 22:00:23 by grenato-         ###   ########.fr        #
+#    Updated: 2022/10/11 11:23:28 by germano          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,8 +25,8 @@ SOURCE_FILES		+= display.c
 OBJECT_PATH			:= obj
 OBJECT				:= $(SOURCE_FILES:%.c=$(OBJECT_PATH)/%.o)
 
-CC					:= gcc
-CFLAGS				:= -Wall -Wextra -Werror -g3
+CC					:= cc
+CFLAGS				:= -Wall -Wextra -Werror
 REMOVE				:= rm -rf
 VALGRIND			:= valgrind
 LDFLAGS				:= -L -lpthread
@@ -39,7 +39,12 @@ vpath				%.c $(SOURCE_PATH)
 vpath				%.h $(HEADER_PATH)
 
 ifdef C_DEBUG
-	CFLAGS += -g3
+	CFLAGS			+= -g3 -pthread
+	CC				:= gcc
+endif
+
+ifndef ARGS
+	ARGS			:= 4 600 100 100
 endif
 
 all:				$(NAME)

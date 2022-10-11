@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   operations.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: grenato- <grenato-@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: germano <germano@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 14:32:26 by grenato-          #+#    #+#             */
-/*   Updated: 2022/10/10 21:15:25 by grenato-         ###   ########.fr       */
+/*   Updated: 2022/10/11 11:47:09 by germano          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,13 @@ void    clst_addback(t_clist **head, t_clist *new_elt)
         (*head)->next = new_elt;
         (*head)->prev = new_elt;
     }
+    else if ((*head)->prev == NULL || (*head)->next == NULL)
+    {
+        (*head)->prev = new_elt;
+        (*head)->next = new_elt;
+        new_elt->prev = *head;
+        new_elt->next = *head;
+    }
     else 
     {
         last = (*head)->prev;
@@ -43,7 +50,7 @@ void    clst_addback(t_clist **head, t_clist *new_elt)
     }
 }
 
-void    clst_clear(t_clist **head, void (*f)(void *))
+void    clst_clear(t_clist **head, void (*f)(void **))
 {
     t_clist *iter;
     t_clist *tmp;
@@ -53,7 +60,7 @@ void    clst_clear(t_clist **head, void (*f)(void *))
     iter = *head;
     while(iter != NULL)
     {
-        f(iter->content);
+        f(&iter->content);
         tmp = iter;
         iter = iter->next;
         ft_memfree((void **)&tmp);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: grenato- <grenato-@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: germano <germano@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/07 19:42:09 by grenato-          #+#    #+#             */
-/*   Updated: 2022/10/10 21:48:57 by grenato-         ###   ########.fr       */
+/*   Updated: 2022/10/11 11:16:27 by germano          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,13 +57,14 @@ typedef struct s_fork
 {
 	int 			id;
 	t_bool			busy;
-	pthread_mutex_t	*mutex;
+	pthread_mutex_t	mutex;
 }	t_fork;
 
 
 typedef struct s_philo
 {
-	pthread_t	*th;
+	int			id;
+	pthread_t	th;
 	t_state		state;
 	t_fork  	*left;
 	t_fork  	*right;
@@ -84,7 +85,7 @@ typedef struct s_rules
 void    run_philo(t_rules *rules);
 void    program_setup(t_fork **forks, t_clist **philos, t_rules *rules);
 
-void    clst_clear(t_clist **head, void (*f)(void *));
+void    clst_clear(t_clist **head, void (*f)(void **));
 void    clst_addback(t_clist **head, t_clist *new_elt);
 t_clist *create_clist_item(t_clist *next, t_clist *prev, void *content);
 
