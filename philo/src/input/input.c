@@ -3,81 +3,84 @@
 /*                                                        :::      ::::::::   */
 /*   input.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: germano <germano@student.42.fr>            +#+  +:+       +#+        */
+/*   By: grenato- <grenato-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 11:23:03 by grenato-          #+#    #+#             */
-/*   Updated: 2022/10/11 19:23:35 by germano          ###   ########.fr       */
+/*   Updated: 2022/10/12 22:44:24 by grenato-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <philosophers.h>
 
-
-unsigned long int char_to_ulongint(char *str)
+unsigned long int	char_to_ulongint(char *str)
 {
-    unsigned long int number;
-    unsigned char   *tmp;
+	unsigned long int	number;
+	unsigned char		*tmp;
 
-    tmp = (unsigned char *)str;
-    number = 0;
-    while (tmp && *tmp != '\0')
-    {
-        number *= 10;
-        number += (unsigned long int)(*tmp - '0');
-        tmp++;
-    }
-    return (number);
+	tmp = (unsigned char *)str;
+	number = 0;
+	while (tmp && *tmp != '\0')
+	{
+		number *= 10;
+		number += (unsigned long int)(*tmp - '0');
+		tmp++;
+	}
+	return (number);
 }
 
-static unsigned long int    *alloc_numbers(int numb_amount)
+static unsigned long int	*alloc_numbers(int numb_amount)
 {
-    unsigned long int   *numbers;
-    int                 i;
+	unsigned long int	*numbers;
+	int					i;
 
-    numbers = malloc(sizeof(unsigned long int) * (numb_amount));
-    if (numbers == NULL)
-    {
-        printf(ERR_MSG_ALLOC);
-        exit(1);
-    }
-    i = -1;
-    while (++i< numb_amount)
-        numbers[i] = 0;
-    return (numbers);
+	numbers = malloc(sizeof(unsigned long int) * (numb_amount));
+	if (numbers == NULL)
+	{
+		printf(ERR_MSG_ALLOC);
+		exit(1);
+	}
+	i = -1;
+	while (++i < numb_amount)
+		numbers[i] = 0;
+	return (numbers);
 }
 
-static void populate_numbers(unsigned long int *numb, int numbers_amount, char *argv[])
+static void	populate_numbers(unsigned long int *numb, int numbers_amount, \
+	char *argv[])
 {
-    int i;
+	int	i;
 
-    i = 0;
-    while (++i < numbers_amount + 1)
-        numb[i - 1] = char_to_ulongint(argv[i]);
+	i = 0;
+	while (++i < numbers_amount + 1)
+		numb[i - 1] = char_to_ulongint(argv[i]);
 }
 
-static void populate_rules(t_rules *rules, unsigned long int *numb, int numbers_amount)
+static void	populate_rules(t_rules *rules, unsigned long int *numb, \
+	int numbers_amount)
 {
-    rules->must_eat = -1;
-    rules->philo_amount = numb[0];
-    rules->die_time = numb[1];
-    rules->eat_time = numb[2];
-    rules->sleep_time = numb[3];
-    if (numbers_amount == 5)
-    {
-        rules->has_must_eat = TRUE;
-        rules->must_eat = numb[4];
-    }
+	rules->must_eat = -1;
+	rules->must_finish = FALSE;
+	rules->philo_amount = numb[0];
+	rules->die_time = numb[1];
+	rules->eat_time = numb[2];
+	rules->sleep_time = numb[3];
+	if (numbers_amount == 5)
+	{
+		rules->has_must_eat = TRUE;
+		rules->must_eat = numb[4];
+	}
+	pthread_mutex_init(&rules->mutex, NULL);
 }
 
-void    receive_input(int argc, char *argv[], t_rules *rules)
+void	receive_input(int argc, char *argv[], t_rules *rules)
 {
-    unsigned long int   *numb;
-    int                 numb_amount;
+	unsigned long int	*numb;
+	int					numb_amount;
 
-    numb_amount = argc - 1;
-    validate_input(argc, argv);
-    numb = alloc_numbers(numb_amount);
-    populate_numbers(numb, numb_amount, argv);
-    populate_rules(rules, numb, numb_amount);
-    ft_memfree((void **)&numb);
+	numb_amount = argc - 1;
+	validate_input(argc, argv);
+	numb = alloc_numbers(numb_amount);
+	populate_numbers(numb, numb_amount, argv);
+	populate_rules(rules, numb, numb_amount);
+	ft_memfree((void **)&numb);
 }

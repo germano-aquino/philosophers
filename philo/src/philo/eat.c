@@ -3,44 +3,69 @@
 /*                                                        :::      ::::::::   */
 /*   eat.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: germano <germano@student.42.fr>            +#+  +:+       +#+        */
+/*   By: grenato- <grenato-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 15:11:21 by germano           #+#    #+#             */
-/*   Updated: 2022/10/11 20:07:29 by germano          ###   ########.fr       */
+/*   Updated: 2022/10/12 22:52:20 by grenato-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <philosophers.h>
 
-t_bool	forks_are_available(t_fork *f1, t_fork *f2)
+t_bool	pick_up_forks(t_philo *philo, t_rules *rules)
 {
-	return (!(f1->busy || f2->busy));
-}
+	t_fork	*f1;
+	t_fork	*f2;
 
-void	pick_up_forks(t_fork *f1, t_fork *f2, t_philo *philo)
-{
+	pthread_mutex_lock(&philo->mutex);
+	philo->state = WAIT;
+	f1 = philo->left;
+	f2 = philo->right;
+	pthread_mutex_unlock(&philo->mutex);
 	pthread_mutex_lock(&f1->mutex);
-	f1->busy = TRUE;
+	if (get_must_finish(rules))
+	{
+		pthread_mutex_unlock(&f1->mutex);
+		return (FALSE);
+	}
 	print_log(philo);
 	pthread_mutex_lock(&f2->mutex);
-	f2->busy = TRUE;
+	if (get_must_finish(rules))
+	{
+		pthread_mutex_unlock(&f1->mutex);
+		pthread_mutex_unlock(&f2->mutex);
+		return (FALSE);
+	}
 	print_log(philo);
+	set_philo_last_meal(philo);
+	return (TRUE);
 }
 
-void	return_forks(t_fork *f1, t_fork *f2)
+void	return_forks(t_philo *philo)
 {
-	f1->busy = FALSE;
+	t_fork	*f1;
+	t_fork	*f2;
+
+	pthread_mutex_lock(&philo->mutex);
+	f1 = philo->left;
+	f2 = philo->right;
+	pthread_mutex_unlock(&philo->mutex);
 	pthread_mutex_unlock(&f1->mutex);
-	f2->busy = FALSE;
 	pthread_mutex_unlock(&f2->mutex);
 }
 
-void	try_to_eat(t_philo *philo)
+void	eating(t_philo *philo, t_rules *rules)
 {
-	pick_up_forks(philo->left, philo->right, philo);
-	philo->state = EAT;
+	static unsigned long int	eat_time;
+
+	if (!eat_time)
+		eat_time = get_eat_time(rules);
+	if (!pick_up_forks(philo, rules))
+		return ;
+	set_philo_state(philo, EAT);
 	print_log(philo);
-	usleep(philo->rules->eat_time * 1000);
-	return_forks(philo->left, philo->right);
-	go_sleep(philo);
+	usleep(eat_time * 1000);
+	return_forks(philo);
+	set_philo_state(philo, SLEEP);
+	life_cicle((void *)philo);
 }

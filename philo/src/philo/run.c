@@ -3,40 +3,49 @@
 /*                                                        :::      ::::::::   */
 /*   run.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: germano <germano@student.42.fr>            +#+  +:+       +#+        */
+/*   By: grenato- <grenato-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 14:15:27 by grenato-          #+#    #+#             */
-/*   Updated: 2022/10/11 20:06:05 by germano          ###   ########.fr       */
+/*   Updated: 2022/10/12 22:52:12 by grenato-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <philosophers.h>
 
-void	*life_cicle(void *arg)
+void	change_philo_state(t_philo *philo, t_rules *rules)
 {
-	t_philo	*philo;
+	t_state	state;
 
-	philo = (t_philo *)arg;
-	if (philo->state == INIT)
-	 	initial_state(philo);
-	// else if (philo->state == WAITING)
-	// 	waiting_to_eat();
-	// else if (philo->state == EAT)
-	// 	eating();
-	// else if (philo->state == SLEEP)
-	// 	sleeping();
-	// else if (philo->state == THINK)
-	// 	thinking();
-	// else if (philo->state == DEAD)
-	// 	exit_due_death();
-	// else if (philo->state == END_OF_PROGRAM)
-	// 	exit_due_victory();
-	//usleep(100 * philo->right->id);
-	//printf("Hello from %d philosopher.\n", philo->right->id);
-	return NULL;
+	state = get_philo_state(philo);
+	if (state == INIT)
+		initial_state(philo, rules);
+	else if (state == WAIT)
+		waiting(philo);
+	else if (state == EAT)
+		eating(philo, rules);
+	else if (state == SLEEP)
+		sleeping(philo, rules);
+	else if (state == THINK)
+		thinking(philo);
+	return ;
 }
 
-void	starting_threads(t_clist *philos, t_rules *rules)
+void	*life_cicle(void *arg)
+{
+	t_philo			*philo;
+	t_bool			must_finish;
+	static t_rules	*rules;
+
+	philo = (t_philo *)arg;
+	if (!rules)
+		rules = get_philo_rules(philo);
+	must_finish = get_must_finish(rules);
+	if (!must_finish)
+		change_philo_state(philo, rules);
+	return (NULL);
+}
+
+void	starting_threads(t_clist *philos, pthread_t *watcher, t_rules *rules)
 {
 	int		i;
 	t_clist	*current_philo;
@@ -44,15 +53,16 @@ void	starting_threads(t_clist *philos, t_rules *rules)
 
 	i = -1;
 	current_philo = philos;
-	while(++i < (int)rules->philo_amount)
+	while (++i < (int)rules->philo_amount)
 	{
 		philo = (t_philo *)current_philo->content;
 		pthread_create(&philo->th, NULL, life_cicle, current_philo->content);
 		current_philo = current_philo->next;
 	}
+	pthread_create(watcher, NULL, verify_philo_is_alive, (void *)philos);
 }
 
-void	ending_threads(t_clist *philos, t_rules *rules)
+void	ending_threads(t_clist *philos, pthread_t *watcher, t_rules *rules)
 {
 	int		i;
 	t_clist	*current_philo;
@@ -66,15 +76,17 @@ void	ending_threads(t_clist *philos, t_rules *rules)
 		pthread_join(philo->th, NULL);
 		current_philo = current_philo->next;
 	}
+	pthread_join(*watcher, NULL);
 }
 
-void    run_philo(t_rules *rules)
+void	run_philo(t_rules *rules)
 {
 	t_fork		*forks;
 	t_clist		*philos;
+	pthread_t	watcher;
 
 	program_setup(&forks, &philos, rules);
-	starting_threads(philos, rules);
-	ending_threads(philos, rules);
+	starting_threads(philos, &watcher, rules);
+	ending_threads(philos, &watcher, rules);
 	program_free(&forks, &philos, rules);
 }

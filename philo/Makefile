@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: germano <germano@student.42.fr>            +#+  +:+       +#+         #
+#    By: grenato- <grenato-@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/24 19:19:45 by grenato-          #+#    #+#              #
-#    Updated: 2022/10/11 19:31:12 by germano          ###   ########.fr        #
+#    Updated: 2022/10/12 20:32:26 by grenato-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,12 +16,13 @@ HEADER_PATH			:= inc
 HEADER_FILES		:= philosophers.h
 
 SOURCE_DIRS			:= .
-SOURCE_DIRS			+= input utils setup philo clist log
+SOURCE_DIRS			+= input utils setup philo clist log watcher get_and_set
 SOURCE_PATH			:= $(addprefix src/, $(SOURCE_DIRS))
 SOURCE_FILES		:= main.c
 SOURCE_FILES		+= validate.c input.c free.c setup.c run.c operations.c
 SOURCE_FILES		+= display.c initial_state.c log.c numbers_to_char.c eat.c
-SOURCE_FILES		+= wait.c sleep.c think.c
+SOURCE_FILES		+= state.c watcher.c philo_get.c philo_set.c rules_get.c
+SOURCE_FILES		+= rules_set.c
 
 OBJECT_PATH			:= obj
 OBJECT				:= $(SOURCE_FILES:%.c=$(OBJECT_PATH)/%.o)

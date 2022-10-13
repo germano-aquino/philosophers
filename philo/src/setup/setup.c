@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   setup.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: germano <germano@student.42.fr>            +#+  +:+       +#+        */
+/*   By: grenato- <grenato-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 14:14:22 by grenato-          #+#    #+#             */
-/*   Updated: 2022/10/11 19:23:57 by germano          ###   ########.fr       */
+/*   Updated: 2022/10/12 22:54:33 by grenato-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ t_philo	*create_philo(t_fork *left, t_fork *right, t_state state, int id)
 	new_philo->left = left;
 	new_philo->right = right;
 	new_philo->state = state;
-    return (new_philo);
+	pthread_mutex_init(&new_philo->mutex, NULL);
+	return (new_philo);
 }
 
 t_clist	*create_philo_clist(t_rules *rules, t_fork *forks)
@@ -31,19 +32,21 @@ t_clist	*create_philo_clist(t_rules *rules, t_fork *forks)
 	unsigned long int	i;
 
 	i = 0;
-	new_philo = create_philo(&forks[rules->philo_amount - 1], &forks[0], INIT, i + 1);
+	new_philo = create_philo(&forks[rules->philo_amount - 1], &forks[0], \
+		INIT, i + 1);
 	new_philo->rules = rules;
 	philo_clist = create_clist_item(NULL, NULL, (void *)new_philo);
 	while (++i < rules->philo_amount)
 	{
 		new_philo = create_philo(&forks[i - 1], &forks[i], INIT, i + 1);
 		new_philo->rules = rules;
-		clst_addback(&philo_clist, create_clist_item(NULL, NULL, (void *)new_philo));
+		clst_addback(&philo_clist, create_clist_item(NULL, NULL, \
+			(void *)new_philo));
 	}
 	return (philo_clist);
 }
 
-t_fork  *create_forks(unsigned long int forks_amount)
+t_fork	*create_forks(unsigned long int forks_amount)
 {
 	t_fork				*forks;
 	unsigned long int	i;
@@ -63,8 +66,8 @@ t_fork  *create_forks(unsigned long int forks_amount)
 	return (forks);
 }
 
-void    program_setup(t_fork **forks, t_clist **philos, t_rules *rules)
+void	program_setup(t_fork **forks, t_clist **philos, t_rules *rules)
 {
-    *forks = create_forks(rules->philo_amount);
+	*forks = create_forks(rules->philo_amount);
 	*philos = create_philo_clist(rules, *forks);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   log.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: germano <germano@student.42.fr>            +#+  +:+       +#+        */
+/*   By: grenato- <grenato-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 13:49:21 by germano           #+#    #+#             */
-/*   Updated: 2022/10/11 19:44:35 by germano          ###   ########.fr       */
+/*   Updated: 2022/10/12 22:49:28 by grenato-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,35 +27,39 @@ static char	*ft_strdup(char *str)
 	return (word);
 }
 
-char	*get_suffix_msg(int	state)
+static char	*get_suffix_msg(int state)
 {
-	char	*messages[NUMBER_OF_STATES] = {
-		" has taken a fork\n",
-		" has taken a fork\n",
-		" is eating\n",
-		" is sleeping\n",
-		" is thinking\n",
-		" died\n"
-	};
+	char	*messages[NUMBER_OF_STATES];
+
+	messages[0] = " has taken a fork\n";
+	messages[1] = " has taken a fork\n";
+	messages[2] = " is eating\n";
+	messages[3] = " is sleeping\n";
+	messages[4] = " is thinking\n";
+	messages[5] = " died\n";
+	messages[6] = " ";
 	return (ft_strdup(messages[state]));
 }
 
-static char	*get_timestamp_in_char()
+static char	*get_timestamp_in_char(void)
 {
-	t_timeval		time;
 	unsigned long	time_mili;
 
-	gettimeofday(&time, NULL);
-	time_mili = time.tv_usec;
+	time_mili = get_timestamp();
 	return (unsignedlongint_to_string(time_mili));
 }
 
 void	print_log(t_philo *philo)
 {
-	char		*msg;
+	char	*msg;
+	int		id;
+	t_state	state;
 
+	id = get_philo_id(philo);
+	state = get_philo_state(philo);
 	msg = get_timestamp_in_char();
-	msg = ft_strjoin_and_free(msg, int_to_string(philo->id));
-	msg = ft_strjoin_and_free(msg, get_suffix_msg((int)philo->state));
+	msg = ft_strjoin_and_free(msg, int_to_string(id));
+	msg = ft_strjoin_and_free(msg, get_suffix_msg((int)state));
 	write(STDOUT_FILENO, msg, ft_strlen(msg));
+	ft_memfree((void **)&msg);
 }
