@@ -6,7 +6,7 @@
 #    By: grenato- <grenato-@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/24 19:19:45 by grenato-          #+#    #+#              #
-#    Updated: 2022/10/12 20:32:26 by grenato-         ###   ########.fr        #
+#    Updated: 2022/10/12 23:59:44 by grenato-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,8 +33,8 @@ REMOVE				:= rm -rf
 VALGRIND			:= valgrind
 LDFLAGS				:= -L -lpthread
 IFLAGS				:= -I $(HEADER_PATH)
-VGFLAGS				:= --leak-check=full --show-leak-kinds=all
-VGFLAGS				+= --trace-children=yes --track-fds=yes
+VGFLAGS				:= 
+VGFLAGS				+= --trace-children=yes --track-fds=yes --tool=helgrind
 VGSUPRESS			:= --suppressions=readline.supp
 
 vpath				%.c $(SOURCE_PATH)

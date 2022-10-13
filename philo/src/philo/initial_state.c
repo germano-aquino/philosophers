@@ -6,7 +6,7 @@
 /*   By: grenato- <grenato-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 13:46:26 by germano           #+#    #+#             */
-/*   Updated: 2022/10/12 22:50:42 by grenato-         ###   ########.fr       */
+/*   Updated: 2022/10/12 23:57:37 by grenato-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,12 +44,11 @@ long int	get_timestamp(void)
 
 void	initial_state(t_philo *philo, t_rules *rules)
 {
-	int							id;
-	static unsigned long int	philo_amount;
+	int					id;
+	unsigned long int	philo_amount;
 
 	id = get_philo_id(philo);
-	if (!philo_amount)
-		philo_amount = get_philo_amount(rules);
+	philo_amount = get_philo_amount(rules);
 	set_philo_last_meal(philo);
 	if (id % 2 && (unsigned long int)id != philo_amount)
 		set_philo_state(philo, EAT);

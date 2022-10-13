@@ -6,7 +6,7 @@
 /*   By: grenato- <grenato-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 13:49:21 by germano           #+#    #+#             */
-/*   Updated: 2022/10/12 22:49:28 by grenato-         ###   ########.fr       */
+/*   Updated: 2022/10/13 00:05:07 by grenato-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,12 +49,24 @@ static char	*get_timestamp_in_char(void)
 	return (unsignedlongint_to_string(time_mili));
 }
 
+t_bool	philo_has_died(t_philo *philo)
+{
+	t_rules	*rules;
+	t_bool	must_finish;
+
+	rules = get_philo_rules(philo);
+	must_finish = get_must_finish(rules);
+	return (must_finish);
+}
+
 void	print_log(t_philo *philo)
 {
 	char	*msg;
 	int		id;
 	t_state	state;
 
+	if (philo_has_died(philo))
+		return ;
 	id = get_philo_id(philo);
 	state = get_philo_state(philo);
 	msg = get_timestamp_in_char();

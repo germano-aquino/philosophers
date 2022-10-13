@@ -6,7 +6,7 @@
 /*   By: grenato- <grenato-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 14:15:27 by grenato-          #+#    #+#             */
-/*   Updated: 2022/10/12 22:52:12 by grenato-         ###   ########.fr       */
+/*   Updated: 2022/10/12 23:54:02 by grenato-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,12 @@ void	change_philo_state(t_philo *philo, t_rules *rules)
 
 void	*life_cicle(void *arg)
 {
-	t_philo			*philo;
-	t_bool			must_finish;
-	static t_rules	*rules;
+	t_rules	*rules;
+	t_philo	*philo;
+	t_bool	must_finish;
 
 	philo = (t_philo *)arg;
-	if (!rules)
-		rules = get_philo_rules(philo);
+	rules = get_philo_rules(philo);
 	must_finish = get_must_finish(rules);
 	if (!must_finish)
 		change_philo_state(philo, rules);
