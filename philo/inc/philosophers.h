@@ -6,7 +6,7 @@
 /*   By: grenato- <grenato-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/07 19:42:09 by grenato-          #+#    #+#             */
-/*   Updated: 2022/10/12 21:19:52 by grenato-         ###   ########.fr       */
+/*   Updated: 2022/10/13 23:03:23 by grenato-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,15 @@ typedef struct s_clist
 	void    *content;
 	struct s_clist *next;
 	struct s_clist *prev;
-}   t_clist;
+}	t_clist;
+
+typedef struct s_record
+{
+	int				*rec;
+	long int 		accumulator;
+	pthread_mutex_t	mutex;
+}	t_record;
+
 
 typedef struct s_rules
 {
@@ -64,6 +72,7 @@ typedef struct s_rules
 	unsigned long int	eat_time;
 	unsigned long int	sleep_time;
 	unsigned long int	must_eat;
+	t_record			meals;
 	t_bool				has_must_eat;
 	t_bool				must_finish;
 	pthread_mutex_t		mutex;
@@ -135,7 +144,15 @@ unsigned long int	get_philo_amount(t_rules *rules);
 unsigned long int	get_die_time(t_rules *rules);
 unsigned long int	get_sleep_time(t_rules *rules);
 unsigned long int	get_eat_time(t_rules *rules);
+unsigned long int	get_must_eat(t_rules *rules);
 t_bool				get_must_finish(t_rules *rules);
+void				set_rules_bool(t_rules *rules, t_bool *has_must_eat, t_bool *must_finish);
 void				set_rules_must_finish(t_rules *rules, t_bool must_finish);
+
+void				init_meals_record(t_rules *rules, t_record *meals);
+t_record			*get_meals_reference(t_rules *rules);
+long int			get_accumulator(t_record *meals);
+int					get_meals_min(t_record *meals, int philo_amount);
+void				inc_meals_rec(t_record *meals, int index);
 
 #endif

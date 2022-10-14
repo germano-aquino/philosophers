@@ -6,7 +6,7 @@
 #    By: grenato- <grenato-@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/24 19:19:45 by grenato-          #+#    #+#              #
-#    Updated: 2022/10/12 23:59:44 by grenato-         ###   ########.fr        #
+#    Updated: 2022/10/13 23:06:11 by grenato-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ SOURCE_FILES		:= main.c
 SOURCE_FILES		+= validate.c input.c free.c setup.c run.c operations.c
 SOURCE_FILES		+= display.c initial_state.c log.c numbers_to_char.c eat.c
 SOURCE_FILES		+= state.c watcher.c philo_get.c philo_set.c rules_get.c
-SOURCE_FILES		+= rules_set.c
+SOURCE_FILES		+= rules_set.c record.c record_get.c
 
 OBJECT_PATH			:= obj
 OBJECT				:= $(SOURCE_FILES:%.c=$(OBJECT_PATH)/%.o)

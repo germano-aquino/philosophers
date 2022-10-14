@@ -6,7 +6,7 @@
 /*   By: grenato- <grenato-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 15:11:21 by germano           #+#    #+#             */
-/*   Updated: 2022/10/12 22:52:20 by grenato-         ###   ########.fr       */
+/*   Updated: 2022/10/13 23:04:48 by grenato-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,17 +41,22 @@ t_bool	pick_up_forks(t_philo *philo, t_rules *rules)
 	return (TRUE);
 }
 
-void	return_forks(t_philo *philo)
+void	return_forks(t_philo *philo, t_rules *rules)
 {
-	t_fork	*f1;
-	t_fork	*f2;
+	int			index;
+	t_fork		*f1;
+	t_fork		*f2;
+	t_record	*meals;
 
 	pthread_mutex_lock(&philo->mutex);
 	f1 = philo->left;
 	f2 = philo->right;
+	index = philo->id - 1;
 	pthread_mutex_unlock(&philo->mutex);
 	pthread_mutex_unlock(&f1->mutex);
 	pthread_mutex_unlock(&f2->mutex);
+	meals = get_meals_reference(rules);
+	inc_meals_rec(meals, index);
 }
 
 void	eating(t_philo *philo, t_rules *rules)
@@ -65,7 +70,7 @@ void	eating(t_philo *philo, t_rules *rules)
 	set_philo_state(philo, EAT);
 	print_log(philo);
 	usleep(eat_time * 1000);
-	return_forks(philo);
+	return_forks(philo, rules);
 	set_philo_state(philo, SLEEP);
 	life_cicle((void *)philo);
 }

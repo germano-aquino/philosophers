@@ -6,7 +6,7 @@
 /*   By: grenato- <grenato-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 11:23:03 by grenato-          #+#    #+#             */
-/*   Updated: 2022/10/12 22:44:24 by grenato-         ###   ########.fr       */
+/*   Updated: 2022/10/13 22:08:27 by grenato-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ static void	populate_rules(t_rules *rules, unsigned long int *numb, \
 	{
 		rules->has_must_eat = TRUE;
 		rules->must_eat = numb[4];
+		init_meals_record(rules, &rules->meals);
 	}
 	pthread_mutex_init(&rules->mutex, NULL);
 }
